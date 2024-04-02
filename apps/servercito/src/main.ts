@@ -97,9 +97,10 @@ bot.hears(
   }
 );
 
-const port = process.env.PORT || 3333;
-const server = app.listen(port, async () => {
-  log(`Server listening at http://localhost:${port}`);
+const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+const port = parseInt(process.env.PORT, 10) || 3333;
+const server = app.listen(port, host, async() => {
+  log(`Server listening on http://${host}:${port}`);
   await bot.launch();
 });
 server.on('error', (error) => {

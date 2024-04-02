@@ -136,7 +136,8 @@ Los comandos del bot incluyen:
    --region $SERVER_GCP_REGION \
    --allow-unauthenticated \
    --port 3333 \
-   --set-env-vars SERVER_GCP_NAME=$SERVER_GCP_NAME,\
+   --set-env-vars NODE_ENV='production',\
+   SERVER_GCP_NAME=$SERVER_GCP_NAME,\
    SERVER_GCP_ZONE=$SERVER_GCP_ZONE,\
    GIPHY_TOKEN='your-giphy-token',\
    BOT_TOKEN='your-bot-token'
