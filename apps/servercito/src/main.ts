@@ -1,3 +1,4 @@
+import * as express from 'express';
 import { Context, Telegraf } from 'telegraf';
 import { stopInstancePubSub, startInstancePubSub } from './gcp';
 import { GiphyFetch } from '@giphy/js-fetch-api';
@@ -8,6 +9,7 @@ function log(message, level = 'INFO') {
   console.log(`[${timestamp}] ${level}: ${message}`);
 }
 
+const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const gf = new GiphyFetch(process.env.GIPHY_TOKEN);
 global.fetch = fetch;
@@ -91,6 +93,16 @@ bot.hears(
     await ctx.reply(randResponse);
   }
 );
+const port = process.env.PORT || 8080;
+
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.status(200).send('Health check OK');
+});
+
+app.listen(port, () => {
+  log(`Server listening on port ${port}`);
+});
 
 bot.launch().then(() => {
   log(`Bot started`);
