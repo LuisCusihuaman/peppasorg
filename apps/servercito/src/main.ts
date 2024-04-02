@@ -60,7 +60,7 @@ bot.hears(/\bminecra|dragon|juegan|juga|game|meme.*\b/, async (ctx: Context) => 
   await ctx.reply(`${randResponse}`);
 });
 
-const port = process.env.port || 8443;
+const port = process.env.PORT || 3333;
 const server = app.listen(port, async () => {
   console.log(`Listening at http://localhost:${port}`);
   await bot.launch()
