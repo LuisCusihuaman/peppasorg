@@ -1,24 +1,13 @@
 # 🚀 PEPPASORG Project
 
-This project is a Node.js application built with Nx, a powerful tool for monorepo development. It uses various libraries such as `express`, `node-fetch`, `telegraf`, and others.
+The application is a Telegram bot that interacts with users and performs various tasks such as starting and stopping a server, and responding to certain keywords with predefined responses or GIFs from Giphy. 
 
-## 🎯 Getting Started
+The bot uses the `Telegraf` library for the Telegram API, `node-fetch` for making HTTP requests, and `GiphyFetch` from the `@giphy/js-fetch-api` library to fetch GIFs.
 
-To set up and run this project, follow the steps below:
+The bot commands include:
 
-### 🛠️ Setup and Installation
-
-1. Clone the repository to your local machine.
-2. Navigate to the project's root directory in your terminal.
-
-#### 💻 Development
-
-1. Run `pnpm install` to install the necessary dependencies.
-2. Run `pnpm start` to start the development server.
-
-## 📚 Project Structure
-
-The project is structured as a monorepo with Nx. It uses the `@nrwl/node` package for Node.js applications, `@nrwl/express` for Express.js applications, and `@nrwl/jest` for testing with Jest.
+- `/prender_servercito`: Starts the server and replies with a gaming GIF.
+- `/apagar_servercito`: Stops the server and replies with a sleeping GIF.
 
 ## 🔑 Obtaining API Tokens and Credentials
 
@@ -49,18 +38,19 @@ const options = {
 };
 ```
 
+### 🛠️ Setup and Installation
+
+1. Clone the repository to your local machine.
+2. Navigate to the project's root directory in your terminal.
+
+#### 💻 Development
+
+1. Run `pnpm install` to install the necessary dependencies.
+2. Run `pnpm start` to start the development server.
+
 ## 🏃‍♂️ Running the Project
 
 After installing the dependencies, you can start the development server by running `pnpm start` in the terminal. This will start the server and you can access the application at `http://localhost:8443`.
-
-## 🛠️ Development
-
-- Modify the source code as needed for additional features or customization.
-- Test the application, ensuring there are no errors or warnings in the console.
-
-## 🚀 Deployment
-
-To build the project for production, run `pnpm build`. This will create a `dist` directory with the compiled JavaScript files.
 
 ## 📚 Support and Documentation
 
