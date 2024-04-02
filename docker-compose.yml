@@ -42,3 +42,15 @@ services:
     volumes:
       # attach the relative directory 'data' to the container's /data path
       - ./data:/data
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data:/srv # Mounting the Minecraft data directory for file access in FileBrowser
+      - ./filebrowser-data:/data # Persistent storage for FileBrowser settings and database
+      - ./filebrowser-config:/config # Configuration storage for FileBrowser
+    environment:
+      - FB_BASEURL=/filebrowser
+    restart: unless-stopped

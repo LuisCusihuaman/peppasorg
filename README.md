@@ -46,7 +46,7 @@ Los comandos del bot incluyen:
    git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft
    chown -R $USERNAME:$USERNAME /home/minecraft
    cd /home/minecraft
-   sudo -u $USERNAME docker compose up mc -d'
+   sudo -u $USERNAME docker compose up -d'
    ```
 
 💸 PRICING: [$104.82/ mo](https://cloud.google.com/products/calculator/estimate-preview/5c08ef3e-87c1-4310-9f08-5cc4c3870264?hl=es_419)
@@ -176,12 +176,18 @@ const options = {
 
 ## 💻 Desarrollo
 
-1. Ejecuta `pnpm install` para instalar las dependencias necesarias.
-2. Ejecuta `pnpm start` para iniciar el servidor de desarrollo.
+1. Exporta las variables de entorno necesarias en tu terminal:
 
-## 🏃‍♂️ Ejecución del Proyecto
+   ```bash
+   export SERVER_GCP_NAME=minecraft-server
+   export SERVER_GCP_ZONE=us-central1-a
+   export BOT_TOKEN=your-bot-token
+   export GIPHY_TOKEN=your-giphy-token
+   ```
 
-Después de instalar las dependencias, puedes iniciar el servidor de desarrollo ejecutando `pnpm start` en la terminal. Esto iniciará el servidor y podrás acceder a la aplicación en `http://localhost:8443`.
+2. Copia el archivo de credenciales `my_credentials.json` de GCP en el directorio del proyecto.
+3. Ejecuta `pnpm install` para instalar las dependencias necesarias.
+4. Ejecuta `pnpm start` para iniciar el servidor de desarrollo.
 
 ## 📚 Soporte y Documentación
 
