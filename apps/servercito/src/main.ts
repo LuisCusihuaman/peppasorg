@@ -17,7 +17,7 @@ global.fetch = fetch;
 
 async function getRandomGif(keyword: string) {
   const min = 0;
-  const max = 15;
+  const max = 20;
   const startGifsSearch: number = Math.floor(
     min + Math.random() * (max - min + 1)
   );
@@ -47,7 +47,7 @@ bot.command('prender_servercito', async (ctx: Context) => {
     await ctx.reply('Prendiendo el servercito... 🙏');
     await startInstancePubSub(data, async () => {
       await ctx.reply('Prendiste el servercito 💚');
-      const gamingGif = await getRandomGif('gaming');
+      const gamingGif = await getRandomGif('game');
       await ctx.replyWithAnimation(gamingGif.images.fixed_height);
     });
   } catch (error) {
@@ -68,7 +68,7 @@ bot.command('apagar_servercito', async (ctx: Context) => {
     await ctx.reply('Apagando el servercito... 🤞');
     await stopInstancePubSub(data, async () => {
       await ctx.reply('Apagaste el servercito 😪');
-      const sleepingGif = await getRandomGif('sleeping');
+      const sleepingGif = await getRandomGif('tired');
       await ctx.replyWithAnimation(sleepingGif.images.fixed_height);
     });
   } catch (error) {
