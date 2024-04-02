@@ -130,6 +130,8 @@ Los comandos del bot incluyen:
    SERVER_GCP_REGION=us-central1
    SERVER_GCP_ZONE=us-central1-a
    SERVER_GCP_NAME=minecraft-server
+   GIPHY_TOKEN=your-giphy-token
+   BOT_TOKEN=your-bot-token
    gcloud run deploy peppasorg-bot \
    --image gcr.io/$PROJECT_ID/peppasorg-bot \
    --platform managed \
@@ -139,8 +141,16 @@ Los comandos del bot incluyen:
    --set-env-vars PRODUCTION='true',\
    SERVER_GCP_NAME=$SERVER_GCP_NAME,\
    SERVER_GCP_ZONE=$SERVER_GCP_ZONE,\
-   GIPHY_TOKEN='your-giphy-token',\
-   BOT_TOKEN='your-bot-token'
+   GIPHY_TOKEN=$GIPHY_TOKEN,\
+   BOT_TOKEN=$BOT_TOKEN
+   ```
+
+5. **Configura el webhook de Telegram**:
+   Configura el webhook de Telegram para que el bot pueda recibir actualizaciones de mensajes:
+
+   ```shell
+   CLOUD_RUN_URL=$(gcloud run services describe peppasorg-bot --region $SERVER_GCP_REGION --format 'value(status.url)')
+   curl -F "url=${CLOUD_RUN_URL}/bot${BOT_TOKEN}" https://api.telegram.org/bot${BOT_TOKEN}/setWebhook
    ```
 
    Reemplaza `your-bot-token` con el token de tu bot de Telegram, `your-giphy-token` con tu token de API de Giphy.

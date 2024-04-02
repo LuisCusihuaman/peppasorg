@@ -1,4 +1,3 @@
-import * as express from 'express';
 import { Context, Telegraf } from 'telegraf';
 import { stopInstancePubSub, startInstancePubSub } from './gcp';
 import { GiphyFetch } from '@giphy/js-fetch-api';
@@ -9,24 +8,14 @@ function log(message, level = 'INFO') {
   console.log(`[${timestamp}] ${level}: ${message}`);
 }
 
-const app = express();
-
-app.use((req, res, next) => {
-  log(`Incoming request from host: ${req.headers.host}`);
-  next();
-});
-
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const gf = new GiphyFetch(process.env.GIPHY_TOKEN);
-declare let global;
 global.fetch = fetch;
 
 async function getRandomGif(keyword: string) {
   const min = 0;
   const max = 20;
-  const startGifsSearch: number = Math.floor(
-    min + Math.random() * (max - min + 1)
-  );
+  const startGifsSearch = Math.floor(min + Math.random() * (max - min + 1));
   const { data: gifs } = await gf.search(keyword, {
     sort: 'relevant',
     lang: 'es',
@@ -99,19 +88,12 @@ bot.hears(
     ];
     const randResponse =
       responses[Math.floor(Math.random() * responses.length)];
-    await ctx.reply(`${randResponse}`);
+    await ctx.reply(randResponse);
   }
 );
 
-const host = process.env.PRODUCTION === 'true' ? '0.0.0.0' : 'localhost';
-const port = parseInt(process.env.PORT, 10) || 3333;
-const server = app.listen(port, host, async () => {
-  log(`Server listening on http://${host}:${port}`);
-  await bot.launch();
-});
-
-server.on('error', (error) => {
-  log(`Server error: ${error.message}`, 'ERROR');
+bot.launch().then(() => {
+  log(`Bot started`);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
