@@ -45,6 +45,7 @@ Los comandos del bot incluyen:
    echo "cd /home/minecraft" >> /home/$USERNAME/.bashrc
    chown -R $USERNAME:$USERNAME /home/minecraft
    git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft
+   chown -R $USERNAME:$USERNAME /home/minecraft
    cd /home/minecraft
    sudo -u $USERNAME docker compose up -d'
    ```
