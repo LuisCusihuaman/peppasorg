@@ -1,8 +1,12 @@
 # 🚀 PEPPASORG
 
-La aplicación es un bot de Telegram que interactúa con los usuarios y realiza varias tareas, como iniciar y detener un servidor, y responder a ciertas palabras clave con respuestas predefinidas o GIFs de Giphy.
+PEPPASORG es un sistema que integra un bot de Telegram y un servidor de Minecraft en GCP, permitiendo control remoto y automatización del servidor junto con respuestas dinámicas en el chat.
 
-El bot utiliza la biblioteca `Telegraf` para la API de Telegram, `node-fetch` para hacer solicitudes HTTP, y `GiphyFetch` de la biblioteca `@giphy/js-fetch-api` para buscar GIFs.
+## Características Principales
+
+- **Bot de Telegram**: Utiliza `Telegraf` para interactuar con la API de Telegram, `node-fetch` para solicitudes HTTP, y `GiphyFetch` para integrar búsqueda de GIFs.
+- **Servidor de Minecraft**: Una instancia en GCP permite a los jugadores acceder a un mundo persistente de Minecraft, con la capacidad de controlar el estado del servidor a través del bot de Telegram.
+- **Despliegue en GCP**: Se detallan los pasos para desplegar el bot de Telegram como una función serverless en Google Cloud Run y la VM para el servidor de Minecraft.
 
 Los comandos del bot incluyen:
 
@@ -10,6 +14,17 @@ Los comandos del bot incluyen:
 - `/apagar_servercito`: Detiene el servidor y responde con un GIF de sueño.
 
 ![peppaorg](peppaorg.png)
+
+# Índice
+
+1. [Introducción](#-peppasorg)
+2. [Configuración del Minecraft Server](#-configuración-del-minecraft-server)
+3. [Despliegue del Telegram Bot](#-despliegue-del-telegram-bot-opcional)
+4. [Obtención de tokens de API y credenciales](#-obtención-de-tokens-de-api-y-credenciales)
+5. [Configuración y Administración del Minecraft Server](#-configuracion-y-administracion-del-minecraft-server)
+6. [Desarrollo](#-desarrollo)
+7. [Soporte y Documentación](#-soporte-y-documentación)
+8. [Contribuidores](#-contribuidores)
 
 ## 📦 Configuración del Minecraft Server
 
@@ -183,6 +198,33 @@ const options = {
 };
 ```
 
+## 👮 Configuracion y Administracion del Minecraft Server
+
+**Ejecutar cualquiera de estos comandos en el RCON**:
+
+RCON_PASSWORD=password
+
+```bash
+docker compose exec mc rcon-cli list
+docker compose exec mc rcon-cli say "Hola, jugadores"
+docker compose exec mc rcon-cli op <player> #Dar permisos de administrador
+docker compose exec mc rcon-cli deop <player> #Quitar permisos de administrador
+docker compose exec mc rcon-cli whitelist add <player>
+docker compose exec mc rcon-cli whitelist remove <player>
+docker compose exec mc rcon-cli ban <player>
+docker compose exec mc rcon-cli ban-ip <ip>
+docker compose exec mc rcon-cli pardon <player>
+docker compose exec mc rcon-cli pardon-ip <ip>
+docker compose exec mc rcon-cli save-all
+docker compose exec mc rcon-cli save-off
+docker compose exec mc rcon-cli save-on
+docker compose exec mc rcon-cli stop
+```
+
+**Configura el minecraft.env con las siguientes variables de entorno**:
+
+[Documentación de Minecraft Server](https://docker-minecraft-server.readthedocs.io/en/latest/variables/)
+
 ## 💻 Desarrollo
 
 1. Exporta las variables de entorno necesarias en tu terminal:
@@ -205,13 +247,14 @@ Para más información y solución de problemas, consulta los siguientes recurso
 - [Documentación de la API del Bot de Telegram](https://core.telegram.org/bots/api)
 - [Documentación de la API de Giphy](https://developers.giphy.com/docs/api/)
 - [Documentación de Google Cloud Platform](https://cloud.google.com/docs)
-- [Documentación de Minecraft Server](https://docker-minecraft-server.readthedocs.io/en/latest/variables/)
 
 ## 🤝 Contribuidores
 
 Este proyecto ha sido posible gracias a la colaboración de los siguientes contribuidores:
 
-- ![Luis Cusihuaman](https://github.com/LuisCusihuaman.png?size=50) [Luis Cusihuaman](https://github.com/LuisCusihuaman)
-- ![Eddy Vega](https://github.com/EddyVegaGarcia.png?size=50) [Eddy Vega](https://github.com/EddyVegaGarcia)
+| Contribuidor                                                         | Perfil                                                  |
+|----------------------------------------------------------------------|---------------------------------------------------------|
+| ![Eduardo Cusihuaman](https://github.com/LuisCusihuaman.png?size=50) | [Eduardo Cusihuaman](https://github.com/LuisCusihuaman) |
+| ![Eddy Vega](https://github.com/EddyVegaGarcia.png?size=50)          | [Eddy Vega](https://github.com/EddyVegaGarcia)          |
 
 ¡Agradecemos su dedicación y esfuerzo en llevar adelante este proyecto!
