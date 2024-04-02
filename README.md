@@ -2,6 +2,8 @@
 
 PEPPASORG es un sistema que integra un bot de Telegram y un servidor de Minecraft en GCP, permitiendo control remoto y automatización del servidor junto con respuestas dinámicas en el chat.
 
+[**ENGLISH DOCS**](README.en.md)
+
 ## Características Principales
 
 - **Bot de Telegram**: Utiliza `Telegraf` para interactuar con la API de Telegram, `node-fetch` para solicitudes HTTP, y `GiphyFetch` para integrar búsqueda de GIFs.
