@@ -32,7 +32,10 @@ bot.start(async (ctx: Context) => {
 
 
 bot.command('prender_servercito', async (ctx: Context) => {
-  const event = {"zone": "southamerica-east1-b", "label": "env=minecraft"}
+  const event = {
+    "zone": process.env.SERVER_GCP_ZONE || "us-central1-a",
+    "label": `name=${process.env.SERVER_GCP_NAME || "minecraft-server"}`
+  };
   const data = {"data": Buffer.from(JSON.stringify(event)).toString('base64')}
   await ctx.reply("Prendiendo el servercito... 🙏")
   await startInstancePubSub(data, async () => {
@@ -44,7 +47,10 @@ bot.command('prender_servercito', async (ctx: Context) => {
 
 
 bot.command('apagar_servercito', async (ctx: Context) => {
-  const event = {"zone": "southamerica-east1-b", "label": "env=minecraft"}
+  const event = {
+    "zone": process.env.SERVER_GCP_ZONE || "us-central1-a",
+    "label": `name=${process.env.SERVER_GCP_NAME || "minecraft-server"}`
+  };
   const data = {"data": Buffer.from(JSON.stringify(event)).toString('base64')}
   await ctx.reply("Apagando el servercito... 🤞")
   await stopInstancePubSub(data, async () => {
