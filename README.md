@@ -1,96 +1,71 @@
+# 🚀 PEPPASORG Project
 
+This project is a Node.js application built with Nx, a powerful tool for monorepo development. It uses various libraries such as `express`, `node-fetch`, `telegraf`, and others.
 
-# Peppasorg
+## 🎯 Getting Started
 
+To set up and run this project, follow the steps below:
+
+### 🛠️ Setup and Installation
+
+1. Clone the repository to your local machine.
+2. Navigate to the project's root directory in your terminal.
+
+#### 💻 Development
+
+1. Run `pnpm install` to install the necessary dependencies.
+2. Run `pnpm start` to start the development server.
+
+## 📚 Project Structure
+
+The project is structured as a monorepo with Nx. It uses the `@nrwl/node` package for Node.js applications, `@nrwl/express` for Express.js applications, and `@nrwl/jest` for testing with Jest.
+
+## 🔑 Obtaining API Tokens and Credentials
+
+### 🤖 Telegram Bot Token
+
+1. Open the Telegram app and search for the "BotFather" bot.
+2. Start a chat with BotFather and send the command `/newbot`.
+3. Follow the prompts to create a new bot and obtain your bot token.
+
+### 🎞️ Giphy Token
+
+1. Go to the [Giphy Developers Portal](https://developers.giphy.com/).
+2. Create a new app and obtain your Giphy API key.
+
+### ☁️ Google Cloud Platform Credentials
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a new project or select an existing one.
+3. Navigate to "APIs & Services" > "Credentials".
+4. Click "Create Credentials" and select "Service account".
+5. Follow the prompts to create a new service account and download the JSON key file.
+
+After obtaining these tokens and credentials, place the GCP JSON key file in the project root and update the `options` object in your code:
+
+```javascript
+const options = {
+  keyFilename: './my_credentials.json', // Replace with your actual JSON key file name
+};
 ```
-docker run --rm -it -e BOT_TOKEN="eaaa" servercito
-```
 
+## 🏃‍♂️ Running the Project
 
+After installing the dependencies, you can start the development server by running `pnpm start` in the terminal. This will start the server and you can access the application at `http://localhost:8443`.
 
-🔎 **Smart, Fast and Extensible Build System**
+## 🛠️ Development
 
-## Adding capabilities to your workspace
+- Modify the source code as needed for additional features or customization.
+- Test the application, ensuring there are no errors or warnings in the console.
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## 🚀 Deployment
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+To build the project for production, run `pnpm build`. This will create a `dist` directory with the compiled JavaScript files.
 
-Below are our core plugins:
+## 📚 Support and Documentation
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+For more information and troubleshooting, refer to the following resources:
 
-There are also many [community plugins](https://nx.dev/community) you could add.
-
-## Generate an application
-
-Run `nx g @nrwl/react:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@peppasorg/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+- [Telegram Bot API Documentation](https://core.telegram.org/bots/api)
+- [Giphy API Documentation](https://developers.giphy.com/docs/api/)
+- [Google Cloud Platform Documentation](https://cloud.google.com/docs)
