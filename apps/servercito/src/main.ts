@@ -39,7 +39,7 @@ bot.command('prender_servercito', async (ctx: Context) => {
   try {
     const event = {
       zone: process.env.SERVER_GCP_ZONE || 'us-central1-a',
-      label: `name=${process.env.SERVER_GCP_NAME || 'minecraft-server'}`,
+      name: `${process.env.SERVER_GCP_NAME || 'minecraft-server'}`,
     };
     const data = {
       data: Buffer.from(JSON.stringify(event)).toString('base64'),
@@ -60,7 +60,7 @@ bot.command('apagar_servercito', async (ctx: Context) => {
   try {
     const event = {
       zone: process.env.SERVER_GCP_ZONE || 'us-central1-a',
-      label: `name=${process.env.SERVER_GCP_NAME || 'minecraft-server'}`,
+      name: `${process.env.SERVER_GCP_NAME || 'minecraft-server'}`,
     };
     const data = {
       data: Buffer.from(JSON.stringify(event)).toString('base64'),

@@ -30,44 +30,44 @@ async function waitForOperation(projectId, operation) {
  * Expects a PubSub message with JSON-formatted event data containing the
  * following attributes:
  *  zone - the GCP zone the instances are located in.
- *  label - the label of instances to start.
+ *  name - the name of instances to start.
  *
  * @param {!object} event Cloud Function PubSub message event.
  * @param {!object} callback Cloud Function PubSub callback indicating
  *  completion.
  */
- export const startInstancePubSub = async (event, callback) => {
+export const startInstancePubSub = async (event, callback) => {
   try {
     const project = await instancesClient.getProjectId();
     const payload = _validatePayload(event);
+    console.log(`Starting instance with name: ${payload.name} in zone: ${payload.zone}`);
     const options = {
-      filter: `labels.${payload.label}`,
+      filter: `name = ${payload.name}`,
       project,
       zone: payload.zone,
     };
 
     const [instances] = await instancesClient.list(options);
-    await Promise.all(
-      instances.map(async instance => {
-        const [response] = await instancesClient.start({
-          project,
-          zone: payload.zone,
-          instance: instance.name,
-        });
+    console.log(`Instances to start: [${instances.map(instance => instance.name).join(', ')}]`);
+    await Promise.all(instances.map(async instance => {
+      console.log(`Starting instance: ${instance.name}`);
+      const [response] = await instancesClient.start({
+        project,
+        zone: payload.zone,
+        instance: instance.name,
+      });
+      return waitForOperation(project, response.latestResponse);
+    }));
 
-        return waitForOperation(project, response.latestResponse);
-      })
-    );
-
-    // Operation complete. Instance successfully started.
     const message = 'Successfully started instance(s)';
     console.log(message);
     callback(null, message);
   } catch (err) {
-    console.log(err);
+    console.log(`Error starting instances: ${err}`);
     callback(err);
   }
 };
+
 // [END functions_start_instance_pubsub]
 // [START functions_stop_instance_pubsub]
 
@@ -77,7 +77,7 @@ async function waitForOperation(projectId, operation) {
  * Expects a PubSub message with JSON-formatted event data containing the
  * following attributes:
  *  zone - the GCP zone the instances are located in.
- *  label - the label of instances to stop.
+ *  name - the name of instances to stop.
  *
  * @param {!object} event Cloud Function PubSub message event.
  * @param {!object} callback Cloud Function PubSub callback indicating completion.
@@ -86,32 +86,30 @@ export const stopInstancePubSub = async (event, callback) => {
   try {
     const project = await instancesClient.getProjectId();
     const payload = _validatePayload(event);
+    console.log(`Stopping instance with name: ${payload.name} in zone: ${payload.zone}`);
     const options = {
-      filter: `labels.${payload.label}`,
+      filter: `name = ${payload.name}`,
       project,
       zone: payload.zone,
     };
 
     const [instances] = await instancesClient.list(options);
+    console.log(`Instances to stop: [${instances.map(instance => instance.name).join(', ')}]`);
+    await Promise.all(instances.map(async instance => {
+      console.log(`Stopping instance: ${instance.name}`);
+      const [response] = await instancesClient.stop({
+        project,
+        zone: payload.zone,
+        instance: instance.name,
+      });
+      return waitForOperation(project, response.latestResponse);
+    }));
 
-    await Promise.all(
-      instances.map(async instance => {
-        const [response] = await instancesClient.stop({
-          project,
-          zone: payload.zone,
-          instance: instance.name,
-        });
-
-        return waitForOperation(project, response.latestResponse);
-      })
-    );
-
-    // Operation complete. Instance successfully stopped.
     const message = 'Successfully stopped instance(s)';
     console.log(message);
     callback(null, message);
   } catch (err) {
-    console.log(err);
+    console.log(`Error stopping instances: ${err}`);
     callback(err);
   }
 };
@@ -128,12 +126,13 @@ const _validatePayload = event => {
   try {
     payload = JSON.parse(Buffer.from(event.data, 'base64').toString());
   } catch (err) {
+    console.error('Invalid Pub/Sub message:', err);
     throw new Error('Invalid Pub/Sub message: ' + err);
   }
   if (!payload.zone) {
     throw new Error("Attribute 'zone' missing from payload");
-  } else if (!payload.label) {
-    throw new Error("Attribute 'label' missing from payload");
+  } else if (!payload.name) {
+    throw new Error("Attribute 'name' missing from payload");
   }
   return payload;
 };
