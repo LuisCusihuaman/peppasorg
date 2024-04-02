@@ -29,6 +29,7 @@ Los comandos del bot incluyen:
    SERVER_GCP_ZONE=us-central1-a
    SERVER_GCP_NAME=minecraft-server
    SERVER_GCP_MACHINE_TYPE=e2-standard-4
+   USERNAME=$(whoami)
    gcloud compute instances create $SERVER_GCP_NAME \
     --zone=$SERVER_GCP_ZONE \
     --machine-type=$SERVER_GCP_MACHINE_TYPE \
@@ -37,16 +38,11 @@ Los comandos del bot incluyen:
     --image-project=debian-cloud \
     --tags=$SERVER_GCP_NAME \
     --address=minecraft-static-ip \
-    --metadata username=$(whoami),startup-script='#! /bin/bash
-   curl -fsSL https://get.docker.com -o get-docker.sh
-   sh get-docker.sh
-   mkdir /home/minecraft
-   USERNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/username" -H "Metadata-Flavor: Google")
-   echo "cd /home/minecraft" >> /home/$USERNAME/.bashrc
-   chown -R $USERNAME:$USERNAME /home/minecraft
-   git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft
-   chown -R $USERNAME:$USERNAME /home/minecraft
-   cd /home/minecraft
+    --metadata username=$USERNAME,startup-script='#!/bin/sh
+   USERNAME=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/username" -H "Metadata-Flavor: Google")
+   mkdir -p /home/minecraft && git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft && chown -R $USERNAME:$USERNAME /home/minecraft
+   curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh && usermod -aG docker $USERNAME
+   cd /home/$USERNAME/
    sudo -u $USERNAME docker compose up -d'
    ```
 
