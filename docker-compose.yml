@@ -24,6 +24,7 @@ services:
       - minecraft.env
     volumes:
       # attach the relative directory 'data' to the container's /data path
+      - ./modpacks:/modpacks:ro
       - ./data:/data
   filebrowser:
     image: filebrowser/filebrowser

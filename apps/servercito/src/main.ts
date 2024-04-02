@@ -14,6 +14,8 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const gf = new GiphyFetch(process.env.GIPHY_TOKEN);
 global.fetch = fetch;
 
+app.use(bot.webhookCallback('/bot' + process.env.BOT_TOKEN));
+
 async function getRandomGif(keyword: string) {
   const min = 0;
   const max = 20;
@@ -93,19 +95,15 @@ bot.hears(
     await ctx.reply(randResponse);
   }
 );
-const port = process.env.PORT || 8080;
 
 // Health check endpoint
 app.get('/', (req, res) => {
   res.status(200).send('Health check OK');
 });
 
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   log(`Server listening on port ${port}`);
-});
-
-bot.launch().then(() => {
-  log(`Bot started`);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
