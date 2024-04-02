@@ -66,7 +66,7 @@ Los comandos del bot incluyen:
 3. **Crear un rol personalizado** con los permisos necesarios para iniciar y detener la instancia de Minecraft:
 
    ```bash
-   gcloud iam roles create minecraft_instance_control --project $PROJECT_ID --title "Minecraft Instance Control" --description "Custom role for starting and stopping Minecraft instance" --permissions compute.instances.start,compute.instances.stop
+   gcloud iam roles create minecraft_instance_control --project $PROJECT_ID --title "Minecraft Instance Control" --description "Custom role for starting and stopping Minecraft instance" --permissions compute.instances.start,compute.instances.stop,compute.instances.list
    ```
 
 4. **Asignar el rol personalizado a la cuenta de servicio**:
@@ -109,7 +109,7 @@ Los comandos del bot incluyen:
    Asegúrate de que tienes un archivo `docker-compose.yml` en tu proyecto que define cómo se debe construir y ejecutar tu aplicación. Luego, en la carpeta de tu proyecto (que debería ser `/home/minecraft` si seguiste el primer paso), ejecuta:
 
    ```shell
-   docker compose up -d --build
+   docker compose up mc -d --build
    ```
 
    Este comando construirá la imagen de tu aplicación y la ejecutará en modo detached, permitiendo que tu bot de Telegram se inicie y funcione en segundo plano.
