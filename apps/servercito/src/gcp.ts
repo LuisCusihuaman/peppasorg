@@ -63,8 +63,7 @@ export const startInstancePubSub = async (event, callback) => {
     console.log(message);
     callback(null, message);
   } catch (err) {
-    console.log(`Error starting instances: ${err}`);
-    callback(err);
+    throw new Error(`Error starting instances: ${err}`);
   }
 };
 
@@ -109,8 +108,7 @@ export const stopInstancePubSub = async (event, callback) => {
     console.log(message);
     callback(null, message);
   } catch (err) {
-    console.log(`Error stopping instances: ${err}`);
-    callback(err);
+    throw new Error(`Error stopping instances: ${err}`);
   }
 };
 // [START functions_start_instance_pubsub]
@@ -126,7 +124,6 @@ const _validatePayload = event => {
   try {
     payload = JSON.parse(Buffer.from(event.data, 'base64').toString());
   } catch (err) {
-    console.error('Invalid Pub/Sub message:', err);
     throw new Error('Invalid Pub/Sub message: ' + err);
   }
   if (!payload.zone) {

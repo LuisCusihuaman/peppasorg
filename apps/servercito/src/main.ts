@@ -51,7 +51,7 @@ bot.command('prender_servercito', async (ctx: Context) => {
       await ctx.replyWithAnimation(gamingGif.images.fixed_height);
     });
   } catch (error) {
-    log(`Error in 'prender_servercito': ${error.message}`, 'ERROR');
+    log(`Error in 'prender_servercito': ${error}`, 'ERROR');
     await ctx.reply('Oops! Something went wrong.');
   }
 });
@@ -72,7 +72,7 @@ bot.command('apagar_servercito', async (ctx: Context) => {
       await ctx.replyWithAnimation(sleepingGif.images.fixed_height);
     });
   } catch (error) {
-    log(`Error in 'apagar_servercito': ${error.message}`, 'ERROR');
+    log(`Error in 'apagar_servercito': ${error}`, 'ERROR');
     await ctx.reply('Oops! Something went wrong.');
   }
 });
