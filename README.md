@@ -137,7 +137,6 @@ Los comandos del bot incluyen:
    --platform managed \
    --region $SERVER_GCP_REGION \
    --allow-unauthenticated \
-   --port 3333 \
    --set-env-vars PRODUCTION='true',\
    SERVER_GCP_NAME=$SERVER_GCP_NAME,\
    SERVER_GCP_ZONE=$SERVER_GCP_ZONE,\
