@@ -1,9 +1,10 @@
-FROM node:14.21.3-alpine3.17
+FROM node:20.12.0-alpine3.19
 WORKDIR /app
+RUN npm install -g pnpm
 COPY . .
 ENV PORT=3333
 EXPOSE ${PORT}
-RUN npm install
-RUN npm run build
+RUN pnpm install
+RUN pnpm run build
 CMD node ./dist/apps/servercito/main.js
 
