@@ -43,8 +43,8 @@ Los comandos del bot incluyen:
    mkdir /home/minecraft
    USERNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/username" -H "Metadata-Flavor: Google")
    echo "cd /home/minecraft" >> /home/$USERNAME/.bashrc
-   git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft
    chown -R $USERNAME:$USERNAME /home/minecraft
+   git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft
    cd /home/minecraft
    sudo -u $USERNAME docker compose up -d'
    ```
@@ -55,10 +55,10 @@ Los comandos del bot incluyen:
 
 1. Agrega reglas de firewall para permitir el tráfico en los puertos necesarios:
    ```bash
-   gcloud compute firewall-rules create allow-25565 \
-       --allow tcp:25565 \
+   gcloud compute firewall-rules create allow-25565-8080 \
+       --allow tcp:25565,tcp:8080 \
        --target-tags=$SERVER_GCP_NAME \
-       --description="Allow traffic on port 25565 (MINECRAFT SERVER)"
+       --description="Allow traffic on port 25565 (MINECRAFT SERVER) and 8080 (FILE SERVER)"
    ```
 
 ## 🤖 Despliegue del Telegram Bot (OPCIONAL)
