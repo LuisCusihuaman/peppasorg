@@ -83,7 +83,7 @@ Los comandos del bot incluyen:
 3. **Crear un rol personalizado** con los permisos necesarios para iniciar y detener la instancia de Minecraft:
 
    ```bash
-   gcloud iam roles create minecraft_instance_control --project $PROJECT_ID --title "Minecraft Instance Control" --description "Custom role for starting and stopping Minecraft instance" --permissions compute.instances.start,compute.instances.stop,compute.instances.list
+   gcloud iam roles create minecraft_instance_control --project $PROJECT_ID --title "Minecraft Instance Control" --description "Custom role for starting and stopping Minecraft instance" --permissions compute.instances.start,compute.instances.stop,compute.instances.list,compute.zoneOperations.get,compute.zoneOperations.list
    ```
 
 4. **Asignar el rol personalizado a la cuenta de servicio**:
