@@ -1,17 +1,20 @@
 version: '3.8'
 
 services:
-  servercito:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '3333:3333'
-    environment:
-      BOT_TOKEN: 'your-bot-token'
-      GIPHY_TOKEN: 'your-giphy-token'
-    volumes:
-      - ./my_credentials.json:/app/my_credentials.json
+  # NO SE PUEDE LEVANTAR EL BOT DE TELEGRAM EN EL MISMO SERVER QUE EL SERVER DE MINECRAFT 🔥
+  # servercito:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '3333:3333'
+  #   environment:
+  #     BOT_TOKEN: 'your-bot-token'
+  #     GIPHY_TOKEN: 'your-giphy-token'
+  #     SERVER_GCP_ZONE: 'your-gcp-zone'
+  #     SERVER_GCP_NAME: 'your-server-name'
+  #   volumes:
+  #     - ./my_credentials.json:/app/my_credentials.json
   mc:
     image: itzg/minecraft-server
     tty: true
@@ -19,23 +22,23 @@ services:
     ports:
       - '25565:25565'
     restart: unless-stopped
-  environment:
-    EULA: 'TRUE'
-    SERVER_NAME: 'elserverdelospiolas'
-    MOTD: 'ola wuachines'
-    MODE: 'survival'
-    ENABLE_RCON: 'true'
-    RCON_PASSWORD: password
-    ENABLE_WHITELIST: 'false'
-    RCON_PORT: 28016
-    SERVER_PORT: 25565
-    MAX_PLAYERS: 20
-    PVP: 'true'
-    TZ: 'America/Argentina/Buenos_Aires'
-    MODS_FILE: /extras/mods.txt
-    REMOVE_OLD_MODS: 'true'
-    TYPE: 'VANILLA'
-    MEMORY: '8G'
+    environment:
+      EULA: 'TRUE'
+      SERVER_NAME: 'elserverdelospiolas'
+      MOTD: 'ola wuachines'
+      MODE: 'survival'
+      ENABLE_RCON: 'true'
+      RCON_PASSWORD: password
+      ENABLE_WHITELIST: 'false'
+      RCON_PORT: 28016
+      SERVER_PORT: 25565
+      MAX_PLAYERS: 20
+      PVP: 'true'
+      TZ: 'America/Argentina/Buenos_Aires'
+      MODS_FILE: /extras/mods.txt
+      REMOVE_OLD_MODS: 'true'
+      TYPE: 'VANILLA'
+      MEMORY: '8G'
     volumes:
       # attach the relative directory 'data' to the container's /data path
       - ./data:/data

@@ -9,7 +9,11 @@ Los comandos del bot incluyen:
 - `/prender_servercito`: Inicia el servidor y responde con un GIF de juego.
 - `/apagar_servercito`: Detiene el servidor y responde con un GIF de sueño.
 
-## 📦 Configuración del Servidor
+![peppaorg](peppaorg.png)
+
+## 📦 Configuración del Minecraft Server
+
+👉 Se solicitara habilitar compute.googleapis.com para crear la maquina virtual donde correrá el servidor de Minecraft.
 
 ### Obtener una IP Pública Estática en Google Cloud Platform
 
@@ -18,35 +22,48 @@ Los comandos del bot incluyen:
    gcloud compute addresses create minecraft-static-ip --region=us-central1
    ```
 
-### Crear una Instancia de VM
+### 🐷 Despliegue de la VM Minecraft Server
 
 1. Crea una instancia de VM en GCP con el siguiente comando:
    ```bash
-   gcloud compute instances create minecraft-server \
-       --zone=us-central1-a \
-       --custom-cpu=4 \
-       --custom-memory=12GB \
-       --boot-disk-size=20GB \
-       --image-family=debian-10 \
-       --image-project=debian-cloud \
-       --tags=minecraft-server \
-       --address=minecraft-static-ip \
-       --metadata=startup-script='#! /bin/bash
+   SERVER_GCP_ZONE=us-central1-a
+   SERVER_GCP_NAME=minecraft-server
+   SERVER_GCP_MACHINE_TYPE=e2-standard-4
+   gcloud compute instances create $SERVER_GCP_NAME \
+    --zone=$SERVER_GCP_ZONE \
+    --machine-type=$SERVER_GCP_MACHINE_TYPE \
+    --boot-disk-size=20GB \
+    --image-family=debian-10 \
+    --image-project=debian-cloud \
+    --tags=$SERVER_GCP_NAME \
+    --address=minecraft-static-ip \
+    --metadata username=$(whoami),startup-script='#! /bin/bash
    curl -fsSL https://get.docker.com -o get-docker.sh
    sh get-docker.sh
    mkdir /home/minecraft
-   chown debian:debian /home/minecraft'
+   USERNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/username" -H "Metadata-Flavor: Google")
+   echo "cd /home/minecraft" >> /home/$USERNAME/.bashrc
+   git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft
+   chown -R $USERNAME:$USERNAME /home/minecraft
+   cd /home/minecraft
+   sudo -u $USERNAME docker compose up mc -d'
    ```
+
+💸 PRICING: [$104.82/ mo](https://cloud.google.com/products/calculator/estimate-preview/5c08ef3e-87c1-4310-9f08-5cc4c3870264?hl=es_419)
 
 ### Configurar Reglas de Firewall
 
 1. Agrega reglas de firewall para permitir el tráfico en los puertos necesarios:
    ```bash
-   gcloud compute firewall-rules create allow-3333-25565 \
-       --allow tcp:3333,tcp:25565 \
-       --target-tags=minecraft-server \
-       --description="Allow traffic on ports 3333 (Telegram BOT) and 25565 (MINECRAFT SERVER)"
+   gcloud compute firewall-rules create allow-25565 \
+       --allow tcp:25565 \
+       --target-tags=$SERVER_GCP_NAME \
+       --description="Allow traffic on port 25565 (MINECRAFT SERVER)"
    ```
+
+## 🤖 Despliegue del Telegram Bot (OPCIONAL)
+
+👉 Se solicitara habilitar cloudbuild.googleapis.com y run.googleapis.com (TOMARA UN TIEMPO) para la construcción y despliegue del bot.
 
 ### Configuración de permisos para la cuenta de servicio de Minecraft
 
@@ -76,43 +93,57 @@ Los comandos del bot incluyen:
    ```
 
 5. **Generar el archivo de clave JSON** para la cuenta de servicio:
+
    ```bash
    gcloud iam service-accounts keys create ./my_credentials.json --iam-account=minecraft-server-account@$PROJECT_ID.iam.gserviceaccount.com
    ```
 
-# 🔥 DEPLOYMENT
+### Despliegue del Bot en Google Cloud Run
 
-1. **Clonar el repositorio en `/home/minecraft`**:
-   Asegúrate de que el directorio `/home/minecraft` existe y tiene los permisos adecuados. Luego, clona tu repositorio en esa carpeta:
-
-   ```shell
-   cd /home/minecraft
-   git clone <URL-del-repositorio> .
-   ```
-
-2. **Configurar las variables de entorno**:
-   Las variables de entorno necesarias para la aplicación están definidas en el archivo `docker-compose.yml`. Asegúrate de que este archivo contenga las configuraciones correctas para tu aplicación, como el token del bot de Telegram y la clave API de Giphy.
-
-   Ejemplo de sección de entorno en `docker-compose.yml`:
-
-   ```yaml
-   services:
-     bot:
-       environment:
-         BOT_TOKEN: 'your-bot-token'
-         GIPHY_TOKEN: 'your-giphy-token'
-   ```
-
-   Reemplaza `your-bot-token` y `your-giphy-token` con los valores correspondientes.
-
-3. **Desplegar con Docker**:
-   Asegúrate de que tienes un archivo `docker-compose.yml` en tu proyecto que define cómo se debe construir y ejecutar tu aplicación. Luego, en la carpeta de tu proyecto (que debería ser `/home/minecraft` si seguiste el primer paso), ejecuta:
+1. **Clonar el repositorio del bot**:
+   Primero, clona el repositorio del bot de Telegram a tu entorno local o de desarrollo:
 
    ```shell
-   docker compose up mc -d --build
+   git clone https://github.com/LuisCusihuaman/peppasorg.git peppasorg-bot
    ```
 
-   Este comando construirá la imagen de tu aplicación y la ejecutará en modo detached, permitiendo que tu bot de Telegram se inicie y funcione en segundo plano.
+2. **Copiar el archivo de credenciales**:
+   Copia `my_credentials.json` al directorio del proyecto clonado:
+
+   ```shell
+   cp my_credentials.json peppasorg-bot/
+   ```
+
+3. **Construye la imagen del contenedor y súbela a Container Registry**:
+   Desde el directorio del proyecto, construye y sube la imagen directamente a Google Container Registry:
+
+   ```shell
+   PROJECT_ID=$(gcloud config get-value project)
+   gcloud builds submit --tag gcr.io/$PROJECT_ID/peppasorg-bot peppasorg-bot/
+   ```
+
+4. **Despliega en Cloud Run**:
+   Utiliza el siguiente comando para desplegar tu bot:
+
+   ```shell
+   SERVER_GCP_REGION=us-central1
+   SERVER_GCP_ZONE=us-central1-a
+   SERVER_GCP_NAME=minecraft-server
+   gcloud run deploy peppasorg-bot \
+   --image gcr.io/$PROJECT_ID/peppasorg-bot \
+   --platform managed \
+   --region $SERVER_GCP_REGION \
+   --allow-unauthenticated \
+   --port 3333 \
+   --set-env-vars SERVER_GCP_NAME=$SERVER_GCP_NAME,\
+   SERVER_GCP_ZONE=$SERVER_GCP_ZONE,\
+   GIPHY_TOKEN='your-giphy-token',\
+   BOT_TOKEN='your-bot-token'
+   ```
+
+   Reemplaza `your-bot-token` con el token de tu bot de Telegram, `your-giphy-token` con tu token de API de Giphy.
+
+Este proceso clonará el repositorio del bot, copiará el archivo de credenciales necesario en el directorio del proyecto, construirá la imagen del contenedor y la desplegará en Google Cloud Run.
 
 ## 🔑 Obtención de tokens de API y credenciales
 
@@ -139,11 +170,11 @@ Después de obtener estos tokens y credenciales, coloca el archivo de clave JSON
 
 ```javascript
 const options = {
-  keyFilename: './my_credentials.json', // Reemplaza con el nombre de tu archivo de clave JSON real
+  keyFilename: './my_credentials.json',
 };
 ```
 
-#### 💻 Desarrollo
+## 💻 Desarrollo
 
 1. Ejecuta `pnpm install` para instalar las dependencias necesarias.
 2. Ejecuta `pnpm start` para iniciar el servidor de desarrollo.
