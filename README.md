@@ -1,61 +1,62 @@
-# 🚀 PEPPASORG Project
+# 🚀 PEPPASORG
 
-The application is a Telegram bot that interacts with users and performs various tasks such as starting and stopping a server, and responding to certain keywords with predefined responses or GIFs from Giphy. 
+La aplicación es un bot de Telegram que interactúa con los usuarios y realiza varias tareas, como iniciar y detener un servidor, y responder a ciertas palabras clave con respuestas predefinidas o GIFs de Giphy.
 
-The bot uses the `Telegraf` library for the Telegram API, `node-fetch` for making HTTP requests, and `GiphyFetch` from the `@giphy/js-fetch-api` library to fetch GIFs.
+El bot utiliza la biblioteca `Telegraf` para la API de Telegram, `node-fetch` para hacer solicitudes HTTP, y `GiphyFetch` de la biblioteca `@giphy/js-fetch-api` para buscar GIFs.
 
-The bot commands include:
+Los comandos del bot incluyen:
 
-- `/prender_servercito`: Starts the server and replies with a gaming GIF.
-- `/apagar_servercito`: Stops the server and replies with a sleeping GIF.
+- `/prender_servercito`: Inicia el servidor y responde con un GIF de juego.
+- `/apagar_servercito`: Detiene el servidor y responde con un GIF de sueño.
 
-## 🔑 Obtaining API Tokens and Credentials
+# 🔥 DEPLOYMENT
 
-### 🤖 Telegram Bot Token
+```shell
+docker-compose up -d --build
+```
 
-1. Open the Telegram app and search for the "BotFather" bot.
-2. Start a chat with BotFather and send the command `/newbot`.
-3. Follow the prompts to create a new bot and obtain your bot token.
+## 🔑 Obtención de tokens de API y credenciales
 
-### 🎞️ Giphy Token
+### 🤖 Token del bot de Telegram
 
-1. Go to the [Giphy Developers Portal](https://developers.giphy.com/).
-2. Create a new app and obtain your Giphy API key.
+1. Abre la aplicación de Telegram y busca el bot "BotFather".
+2. Inicia un chat con BotFather y envía el comando `/newbot`.
+3. Sigue las indicaciones para crear un nuevo bot y obtener tu token de bot.
 
-### ☁️ Google Cloud Platform Credentials
+### 🎞️ Token de Giphy
 
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
-2. Create a new project or select an existing one.
-3. Navigate to "APIs & Services" > "Credentials".
-4. Click "Create Credentials" and select "Service account".
-5. Follow the prompts to create a new service account and download the JSON key file.
+1. Ve al [Portal de Desarrolladores de Giphy](https://developers.giphy.com/).
+2. Crea una nueva aplicación y obtén tu clave de API de Giphy.
 
-After obtaining these tokens and credentials, place the GCP JSON key file in the project root and update the `options` object in your code:
+### ☁️ Credenciales de Google Cloud Platform
+
+1. Ve a la [Consola de Google Cloud](https://console.cloud.google.com/).
+2. Crea un nuevo proyecto o selecciona uno existente.
+3. Navega a "APIs y servicios" > "Credenciales".
+4. Haz clic en "Crear credenciales" y selecciona "Cuenta de servicio".
+5. Sigue las indicaciones para crear una nueva cuenta de servicio y descarga el archivo de clave JSON.
+
+Después de obtener estos tokens y credenciales, coloca el archivo de clave JSON de GCP en la raíz del proyecto, con el nombre:
 
 ```javascript
 const options = {
-  keyFilename: './my_credentials.json', // Replace with your actual JSON key file name
+  keyFilename: './my_credentials.json', // Reemplaza con el nombre de tu archivo de clave JSON real
 };
 ```
 
-### 🛠️ Setup and Installation
+#### 💻 Desarrollo
 
-1. Clone the repository to your local machine.
-2. Navigate to the project's root directory in your terminal.
+1. Ejecuta `pnpm install` para instalar las dependencias necesarias.
+2. Ejecuta `pnpm start` para iniciar el servidor de desarrollo.
 
-#### 💻 Development
+## 🏃‍♂️ Ejecución del Proyecto
 
-1. Run `pnpm install` to install the necessary dependencies.
-2. Run `pnpm start` to start the development server.
+Después de instalar las dependencias, puedes iniciar el servidor de desarrollo ejecutando `pnpm start` en la terminal. Esto iniciará el servidor y podrás acceder a la aplicación en `http://localhost:8443`.
 
-## 🏃‍♂️ Running the Project
+## 📚 Soporte y Documentación
 
-After installing the dependencies, you can start the development server by running `pnpm start` in the terminal. This will start the server and you can access the application at `http://localhost:8443`.
+Para más información y solución de problemas, consulta los siguientes recursos:
 
-## 📚 Support and Documentation
-
-For more information and troubleshooting, refer to the following resources:
-
-- [Telegram Bot API Documentation](https://core.telegram.org/bots/api)
-- [Giphy API Documentation](https://developers.giphy.com/docs/api/)
-- [Google Cloud Platform Documentation](https://cloud.google.com/docs)
+- [Documentación de la API del Bot de Telegram](https://core.telegram.org/bots/api)
+- [Documentación de la API de Giphy](https://developers.giphy.com/docs/api/)
+- [Documentación de Google Cloud Platform](https://cloud.google.com/docs)
