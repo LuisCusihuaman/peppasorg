@@ -40,10 +40,12 @@ Los comandos del bot incluyen:
     --address=minecraft-static-ip \
     --metadata username=$USERNAME,startup-script='#!/bin/sh
    USERNAME=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/username" -H "Metadata-Flavor: Google")
-   mkdir -p /home/minecraft && git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft && chown -R $USERNAME:$USERNAME /home/minecraft
+   mkdir -p /home/minecraft && \
+      git clone https://github.com/LuisCusihuaman/peppasorg.git /home/minecraft && \
+      mkdir -p /home/minecraft/mods && \
+      chown -R $USERNAME:$USERNAME /home/minecraft
    curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh && usermod -aG docker $USERNAME
-   cd /home/$USERNAME/
-   sudo -u $USERNAME docker compose up -d'
+   cd /home/$USERNAME/ && sudo -u $USERNAME docker compose up -d'
    ```
 
 💸 PRICING: [$104.82/ mo](https://cloud.google.com/products/calculator/estimate-preview/5c08ef3e-87c1-4310-9f08-5cc4c3870264?hl=es_419)

@@ -24,7 +24,7 @@ services:
       - minecraft.env
     volumes:
       # attach the relative directory 'data' to the container's /data path
-      - ./modpacks:/modpacks
+      - ./mods:/mods
       - ./data:/data
   filebrowser:
     image: filebrowser/filebrowser
@@ -33,7 +33,7 @@ services:
       - 8080:80
     volumes:
       - ./minecraft.env:/srv/minecraft.env # Mounting the Minecraft environment file for file access in FileBrowser
-      - ./modpacks:/srv/modpacks # Mounting the Minecraft modpacks directory for file access in FileBrowser
+      - ./mods:/srv/mods # Mounting the Minecraft modpacks directory for file access in FileBrowser
       - ./data:/srv/data # Mounting the Minecraft data directory for file access in FileBrowser
       - ./filebrowser-data:/data # Persistent storage for FileBrowser settings and database
       - ./filebrowser-config:/config # Configuration storage for FileBrowser
