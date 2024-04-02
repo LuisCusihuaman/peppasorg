@@ -4,6 +4,11 @@ import { stopInstancePubSub, startInstancePubSub } from './gcp';
 import { GiphyFetch } from '@giphy/js-fetch-api';
 import fetch from 'node-fetch';
 
+function log(message, level = 'INFO') {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${level}: ${message}`);
+}
+
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const gf = new GiphyFetch(process.env.GIPHY_TOKEN);
@@ -31,31 +36,45 @@ bot.start(async (ctx: Context) => {
 });
 
 bot.command('prender_servercito', async (ctx: Context) => {
-  const event = {
-    zone: process.env.SERVER_GCP_ZONE || 'us-central1-a',
-    label: `name=${process.env.SERVER_GCP_NAME || 'minecraft-server'}`,
-  };
-  const data = { data: Buffer.from(JSON.stringify(event)).toString('base64') };
-  await ctx.reply('Prendiendo el servercito... 🙏');
-  await startInstancePubSub(data, async () => {
-    await ctx.reply('Prendiste el servercito 💚');
-    const gamingGif = await getRandomGif('gaming');
-    await ctx.replyWithAnimation(gamingGif.images.fixed_height);
-  });
+  try {
+    const event = {
+      zone: process.env.SERVER_GCP_ZONE || 'us-central1-a',
+      label: `name=${process.env.SERVER_GCP_NAME || 'minecraft-server'}`,
+    };
+    const data = {
+      data: Buffer.from(JSON.stringify(event)).toString('base64'),
+    };
+    await ctx.reply('Prendiendo el servercito... 🙏');
+    await startInstancePubSub(data, async () => {
+      await ctx.reply('Prendiste el servercito 💚');
+      const gamingGif = await getRandomGif('gaming');
+      await ctx.replyWithAnimation(gamingGif.images.fixed_height);
+    });
+  } catch (error) {
+    log(`Error in 'prender_servercito': ${error.message}`, 'ERROR');
+    await ctx.reply('Oops! Something went wrong.');
+  }
 });
 
 bot.command('apagar_servercito', async (ctx: Context) => {
-  const event = {
-    zone: process.env.SERVER_GCP_ZONE || 'us-central1-a',
-    label: `name=${process.env.SERVER_GCP_NAME || 'minecraft-server'}`,
-  };
-  const data = { data: Buffer.from(JSON.stringify(event)).toString('base64') };
-  await ctx.reply('Apagando el servercito... 🤞');
-  await stopInstancePubSub(data, async () => {
-    await ctx.reply('Apagaste el servercito 😪');
-    const sleepingGif = await getRandomGif('sleeping');
-    await ctx.replyWithAnimation(sleepingGif.images.fixed_height);
-  });
+  try {
+    const event = {
+      zone: process.env.SERVER_GCP_ZONE || 'us-central1-a',
+      label: `name=${process.env.SERVER_GCP_NAME || 'minecraft-server'}`,
+    };
+    const data = {
+      data: Buffer.from(JSON.stringify(event)).toString('base64'),
+    };
+    await ctx.reply('Apagando el servercito... 🤞');
+    await stopInstancePubSub(data, async () => {
+      await ctx.reply('Apagaste el servercito 😪');
+      const sleepingGif = await getRandomGif('sleeping');
+      await ctx.replyWithAnimation(sleepingGif.images.fixed_height);
+    });
+  } catch (error) {
+    log(`Error in 'apagar_servercito': ${error.message}`, 'ERROR');
+    await ctx.reply('Oops! Something went wrong.');
+  }
 });
 
 bot.hears(
@@ -80,7 +99,13 @@ bot.hears(
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, async () => {
-  console.log(`Listening at http://localhost:${port}`);
+  log(`Server listening at http://localhost:${port}`);
   await bot.launch();
 });
-server.on('error', console.error);
+server.on('error', (error) => {
+  log(`Server error: ${error.message}`, 'ERROR');
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  log(`Unhandled Rejection at: ${promise} reason: ${reason}`, 'ERROR');
+});
