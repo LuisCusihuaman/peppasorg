@@ -10,6 +10,12 @@ function log(message, level = 'INFO') {
 }
 
 const app = express();
+
+app.use((req, res, next) => {
+  log(`Incoming request from host: ${req.headers.host}`);
+  next();
+});
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const gf = new GiphyFetch(process.env.GIPHY_TOKEN);
 declare let global;
