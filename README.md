@@ -198,3 +198,13 @@ Para más información y solución de problemas, consulta los siguientes recurso
 - [Documentación de la API del Bot de Telegram](https://core.telegram.org/bots/api)
 - [Documentación de la API de Giphy](https://developers.giphy.com/docs/api/)
 - [Documentación de Google Cloud Platform](https://cloud.google.com/docs)
+- [Documentación de Minecraft Server](https://docker-minecraft-server.readthedocs.io/en/latest/variables/)
+
+## 🤝 Contribuidores
+
+Este proyecto ha sido posible gracias a la colaboración de los siguientes contribuidores:
+
+- ![Luis Cusihuaman](https://github.com/LuisCusihuaman.png?size=50) [Luis Cusihuaman](https://github.com/LuisCusihuaman)
+- ![Eddy Vega](https://github.com/EddyVegaGarcia.png?size=50) [Eddy Vega](https://github.com/EddyVegaGarcia)
+
+¡Agradecemos su dedicación y esfuerzo en llevar adelante este proyecto!
